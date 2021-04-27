@@ -427,8 +427,19 @@ class QuotesImpl private (using val ctx: Context) extends Quotes, QuoteUnpickler
     end IdentTypeTest
 
     object Ident extends IdentModule:
+      def apply(name: String, tpe: TypeRepr, flags: Flags, privateWithing: Symbol): Ident = 
+        val symbol = Symbol.newVal(
+          Symbol.spliceOwner,
+          name,
+          tpe,
+          flags,
+          privateWithing
+        )
+        tpd.ref(symbol).asInstanceOf[Ident]
+
       def apply(tmref: TermRef): Term =
         withDefaultPos(tpd.ref(tmref).asInstanceOf[Term])
+
       def copy(original: Tree)(name: String): Ident =
         tpd.cpy.Ident(original)(name.toTermName)
       def unapply(tree: Ident): Some[String] =

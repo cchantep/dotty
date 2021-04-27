@@ -738,6 +738,8 @@ trait Quotes { self: runtime.QuoteUnpickler & runtime.QuoteMatching =>
 
     /** Methods of the module object `val Ident` */
     trait IdentModule { this: Ident.type =>
+      def apply(name: String, tpe: TypeRepr, flags: Flags, privateWithing: Symbol): Ident
+
       def apply(tmref: TermRef): Term
 
       def copy(original: Tree)(name: String): Ident
